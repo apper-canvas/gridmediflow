@@ -1,0 +1,345 @@
+[
+  {
+    "id": "P001",
+    "personalInfo": {
+      "firstName": "Emma",
+      "lastName": "Rodriguez",
+      "age": 34,
+      "bloodType": "A+",
+      "phone": "(555) 123-4567",
+      "email": "emma.rodriguez@email.com",
+      "address": "123 Medical Center Dr, City, ST 12345",
+      "lastVisit": "2024-01-15"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Hypertension",
+        "diagnosedDate": "2023-06-15",
+        "status": "active"
+      },
+      {
+        "condition": "Type 2 Diabetes",
+        "diagnosedDate": "2023-08-20",
+        "status": "active"
+      }
+    ],
+    "appointments": ["A001", "A008"],
+    "prescriptions": ["RX001", "RX007"],
+    "insuranceInfo": {
+      "provider": "Blue Cross Blue Shield",
+      "policyNumber": "BC123456789",
+      "groupNumber": "GRP001"
+    }
+  },
+  {
+    "id": "P002",
+    "personalInfo": {
+      "firstName": "Michael",
+      "lastName": "Chen",
+      "age": 28,
+      "bloodType": "O-",
+      "phone": "(555) 234-5678",
+      "email": "michael.chen@email.com",
+      "address": "456 Health Ave, City, ST 12345",
+      "lastVisit": "2024-01-18"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Asthma",
+        "diagnosedDate": "2020-03-10",
+        "status": "active"
+      }
+    ],
+    "appointments": ["A002"],
+    "prescriptions": ["RX002"],
+    "insuranceInfo": {
+      "provider": "Aetna",
+      "policyNumber": "AET987654321",
+      "groupNumber": "GRP002"
+    }
+  },
+  {
+    "id": "P003",
+    "personalInfo": {
+      "firstName": "Sarah",
+      "lastName": "Williams",
+      "age": 45,
+      "bloodType": "B+",
+      "phone": "(555) 345-6789",
+      "email": "sarah.williams@email.com",
+      "address": "789 Wellness Blvd, City, ST 12345",
+      "lastVisit": "2024-01-20"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Migraine",
+        "diagnosedDate": "2019-11-05",
+        "status": "active"
+      },
+      {
+        "condition": "Anxiety Disorder",
+        "diagnosedDate": "2022-01-12",
+        "status": "managed"
+      }
+    ],
+    "appointments": ["A003"],
+    "prescriptions": ["RX003", "RX008"],
+    "insuranceInfo": {
+      "provider": "Cigna",
+      "policyNumber": "CIG456789123",
+      "groupNumber": "GRP003"
+    }
+  },
+  {
+    "id": "P004",
+    "personalInfo": {
+      "firstName": "David",
+      "lastName": "Johnson",
+      "age": 52,
+      "bloodType": "AB+",
+      "phone": "(555) 456-7890",
+      "email": "david.johnson@email.com",
+      "address": "321 Care Center St, City, ST 12345",
+      "lastVisit": "2024-01-12"
+    },
+    "medicalHistory": [
+      {
+        "condition": "High Cholesterol",
+        "diagnosedDate": "2021-09-18",
+        "status": "active"
+      },
+      {
+        "condition": "Arthritis",
+        "diagnosedDate": "2023-03-22",
+        "status": "active"
+      }
+    ],
+    "appointments": ["A004"],
+    "prescriptions": ["RX004"],
+    "insuranceInfo": {
+      "provider": "United Healthcare",
+      "policyNumber": "UHC789123456",
+      "groupNumber": "GRP004"
+    }
+  },
+  {
+    "id": "P005",
+    "personalInfo": {
+      "firstName": "Jessica",
+      "lastName": "Brown",
+      "age": 31,
+      "bloodType": "A-",
+      "phone": "(555) 567-8901",
+      "email": "jessica.brown@email.com",
+      "address": "654 Recovery Rd, City, ST 12345",
+      "lastVisit": "2024-01-22"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Depression",
+        "diagnosedDate": "2022-07-30",
+        "status": "managed"
+      }
+    ],
+    "appointments": ["A005"],
+    "prescriptions": ["RX005"],
+    "insuranceInfo": {
+      "provider": "Kaiser Permanente",
+      "policyNumber": "KP123789456",
+      "groupNumber": "GRP005"
+    }
+  },
+  {
+    "id": "P006",
+    "personalInfo": {
+      "firstName": "Robert",
+      "lastName": "Davis",
+      "age": 67,
+      "bloodType": "O+",
+      "phone": "(555) 678-9012",
+      "email": "robert.davis@email.com",
+      "address": "987 Senior Care Ave, City, ST 12345",
+      "lastVisit": "2024-01-16"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Coronary Artery Disease",
+        "diagnosedDate": "2020-12-08",
+        "status": "active"
+      },
+      {
+        "condition": "Diabetes Type 2",
+        "diagnosedDate": "2019-05-14",
+        "status": "active"
+      }
+    ],
+    "appointments": ["A006"],
+    "prescriptions": ["RX006", "RX009"],
+    "insuranceInfo": {
+      "provider": "Medicare",
+      "policyNumber": "MED456123789",
+      "groupNumber": "MED001"
+    }
+  },
+  {
+    "id": "P007",
+    "personalInfo": {
+      "firstName": "Lisa",
+      "lastName": "Anderson",
+      "age": 39,
+      "bloodType": "B-",
+      "phone": "(555) 789-0123",
+      "email": "lisa.anderson@email.com",
+      "address": "147 Family Health Dr, City, ST 12345",
+      "lastVisit": "2024-01-19"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Thyroid Disorder",
+        "diagnosedDate": "2021-04-25",
+        "status": "active"
+      }
+    ],
+    "appointments": ["A007"],
+    "prescriptions": ["RX010"],
+    "insuranceInfo": {
+      "provider": "Humana",
+      "policyNumber": "HUM789456123",
+      "groupNumber": "GRP006"
+    }
+  },
+  {
+    "id": "P008",
+    "personalInfo": {
+      "firstName": "James",
+      "lastName": "Wilson",
+      "age": 43,
+      "bloodType": "A+",
+      "phone": "(555) 890-1234",
+      "email": "james.wilson@email.com",
+      "address": "258 Clinic Plaza, City, ST 12345",
+      "lastVisit": "2024-01-14"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Sleep Apnea",
+        "diagnosedDate": "2022-10-30",
+        "status": "active"
+      }
+    ],
+    "appointments": [],
+    "prescriptions": [],
+    "insuranceInfo": {
+      "provider": "Blue Cross Blue Shield",
+      "policyNumber": "BC987654321",
+      "groupNumber": "GRP007"
+    }
+  },
+  {
+    "id": "P009",
+    "personalInfo": {
+      "firstName": "Maria",
+      "lastName": "Garcia",
+      "age": 29,
+      "bloodType": "O+",
+      "phone": "(555) 901-2345",
+      "email": "maria.garcia@email.com",
+      "address": "369 Medical Park Way, City, ST 12345",
+      "lastVisit": "2024-01-21"
+    },
+    "medicalHistory": [],
+    "appointments": ["A009"],
+    "prescriptions": [],
+    "insuranceInfo": {
+      "provider": "Aetna",
+      "policyNumber": "AET123456789",
+      "groupNumber": "GRP008"
+    }
+  },
+  {
+    "id": "P010",
+    "personalInfo": {
+      "firstName": "Christopher",
+      "lastName": "Martinez",
+      "age": 36,
+      "bloodType": "AB-",
+      "phone": "(555) 012-3456",
+      "email": "christopher.martinez@email.com",
+      "address": "741 Healthcare Blvd, City, ST 12345",
+      "lastVisit": "2024-01-17"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Chronic Back Pain",
+        "diagnosedDate": "2023-01-15",
+        "status": "active"
+      }
+    ],
+    "appointments": ["A010"],
+    "prescriptions": ["RX011"],
+    "insuranceInfo": {
+      "provider": "Cigna",
+      "policyNumber": "CIG654321987",
+      "groupNumber": "GRP009"
+    }
+  },
+  {
+    "id": "P011",
+    "personalInfo": {
+      "firstName": "Amanda",
+      "lastName": "Taylor",
+      "age": 26,
+      "bloodType": "A+",
+      "phone": "(555) 123-4567",
+      "email": "amanda.taylor@email.com",
+      "address": "852 Urgent Care St, City, ST 12345",
+      "lastVisit": "2024-01-23"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Allergic Rhinitis",
+        "diagnosedDate": "2023-04-10",
+        "status": "active"
+      }
+    ],
+    "appointments": [],
+    "prescriptions": ["RX012"],
+    "insuranceInfo": {
+      "provider": "United Healthcare",
+      "policyNumber": "UHC321987654",
+      "groupNumber": "GRP010"
+    }
+  },
+  {
+    "id": "P012",
+    "personalInfo": {
+      "firstName": "Kevin",
+      "lastName": "Lee",
+      "age": 48,
+      "bloodType": "B+",
+      "phone": "(555) 234-5678",
+      "email": "kevin.lee@email.com",
+      "address": "963 Specialty Care Ave, City, ST 12345",
+      "lastVisit": "2024-01-13"
+    },
+    "medicalHistory": [
+      {
+        "condition": "Gout",
+        "diagnosedDate": "2022-08-05",
+        "status": "active"
+      },
+      {
+        "condition": "Hypertension",
+        "diagnosedDate": "2023-02-18",
+        "status": "active"
+      }
+    ],
+    "appointments": ["A011"],
+    "prescriptions": ["RX013"],
+    "insuranceInfo": {
+      "provider": "Kaiser Permanente",
+      "policyNumber": "KP987654321",
+      "groupNumber": "GRP011"
+    }
+  }
+]

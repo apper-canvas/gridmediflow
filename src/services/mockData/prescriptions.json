@@ -1,0 +1,286 @@
+[
+  {
+    "id": "RX001",
+    "patientName": "Emma Rodriguez",
+    "doctorName": "Dr. Sarah Johnson",
+    "medications": [
+      {
+        "name": "Metformin",
+        "dosage": "500mg",
+        "frequency": "twice daily",
+        "instructions": "Take with meals"
+      },
+      {
+        "name": "Lisinopril",
+        "dosage": "10mg",
+        "frequency": "once daily",
+        "instructions": "Take in the morning"
+      }
+    ],
+    "dateIssued": "2024-01-15T00:00:00",
+    "duration": {
+      "amount": 30,
+      "unit": "days"
+    },
+    "refillsRemaining": 2,
+    "status": "active"
+  },
+  {
+    "id": "RX002",
+    "patientName": "Michael Chen",
+    "doctorName": "Dr. Sarah Johnson",
+    "medications": [
+      {
+        "name": "Albuterol Inhaler",
+        "dosage": "90mcg",
+        "frequency": "as needed",
+        "instructions": "Use during asthma attacks, max 4 times daily"
+      }
+    ],
+    "dateIssued": "2024-01-18T00:00:00",
+    "duration": {
+      "amount": 90,
+      "unit": "days"
+    },
+    "refillsRemaining": 5,
+    "status": "active"
+  },
+  {
+    "id": "RX003",
+    "patientName": "Sarah Williams",
+    "doctorName": "Dr. Mark Stevens",
+    "medications": [
+      {
+        "name": "Sumatriptan",
+        "dosage": "50mg",
+        "frequency": "as needed",
+        "instructions": "Take at onset of migraine, max 2 doses per day"
+      }
+    ],
+    "dateIssued": "2024-01-20T00:00:00",
+    "duration": {
+      "amount": 30,
+      "unit": "days"
+    },
+    "refillsRemaining": 3,
+    "status": "active"
+  },
+  {
+    "id": "RX004",
+    "patientName": "David Johnson",
+    "doctorName": "Dr. Sarah Johnson",
+    "medications": [
+      {
+        "name": "Atorvastatin",
+        "dosage": "20mg",
+        "frequency": "once daily",
+        "instructions": "Take at bedtime"
+      },
+      {
+        "name": "Ibuprofen",
+        "dosage": "400mg",
+        "frequency": "twice daily",
+        "instructions": "Take with food for arthritis pain"
+      }
+    ],
+    "dateIssued": "2024-01-12T00:00:00",
+    "duration": {
+      "amount": 60,
+      "unit": "days"
+    },
+    "refillsRemaining": 1,
+    "status": "active"
+  },
+  {
+    "id": "RX005",
+    "patientName": "Jessica Brown",
+    "doctorName": "Dr. Emily Watson",
+    "medications": [
+      {
+        "name": "Sertraline",
+        "dosage": "50mg",
+        "frequency": "once daily",
+        "instructions": "Take in the morning with food"
+      }
+    ],
+    "dateIssued": "2024-01-22T00:00:00",
+    "duration": {
+      "amount": 90,
+      "unit": "days"
+    },
+    "refillsRemaining": 4,
+    "status": "active"
+  },
+  {
+    "id": "RX006",
+    "patientName": "Robert Davis",
+    "doctorName": "Dr. Michael Thompson",
+    "medications": [
+      {
+        "name": "Clopidogrel",
+        "dosage": "75mg",
+        "frequency": "once daily",
+        "instructions": "Take with or without food"
+      }
+    ],
+    "dateIssued": "2024-01-16T00:00:00",
+    "duration": {
+      "amount": 90,
+      "unit": "days"
+    },
+    "refillsRemaining": 2,
+    "status": "active"
+  },
+  {
+    "id": "RX007",
+    "patientName": "Emma Rodriguez",
+    "doctorName": "Dr. Sarah Johnson",
+    "medications": [
+      {
+        "name": "Aspirin",
+        "dosage": "81mg",
+        "frequency": "once daily",
+        "instructions": "Take with food, low-dose for cardioprotection"
+      }
+    ],
+    "dateIssued": "2024-01-15T00:00:00",
+    "duration": {
+      "amount": 30,
+      "unit": "days"
+    },
+    "refillsRemaining": 0,
+    "status": "expired"
+  },
+  {
+    "id": "RX008",
+    "patientName": "Sarah Williams",
+    "doctorName": "Dr. Emily Watson",
+    "medications": [
+      {
+        "name": "Lorazepam",
+        "dosage": "0.5mg",
+        "frequency": "as needed",
+        "instructions": "For anxiety, max 3 times daily"
+      }
+    ],
+    "dateIssued": "2024-01-20T00:00:00",
+    "duration": {
+      "amount": 14,
+      "unit": "days"
+    },
+    "refillsRemaining": 0,
+    "status": "active"
+  },
+  {
+    "id": "RX009",
+    "patientName": "Robert Davis",
+    "doctorName": "Dr. Sarah Johnson",
+    "medications": [
+      {
+        "name": "Insulin Glargine",
+        "dosage": "20 units",
+        "frequency": "once daily",
+        "instructions": "Inject subcutaneously at bedtime"
+      }
+    ],
+    "dateIssued": "2024-01-16T00:00:00",
+    "duration": {
+      "amount": 30,
+      "unit": "days"
+    },
+    "refillsRemaining": 5,
+    "status": "active"
+  },
+  {
+    "id": "RX010",
+    "patientName": "Lisa Anderson",
+    "doctorName": "Dr. Sarah Johnson",
+    "medications": [
+      {
+        "name": "Levothyroxine",
+        "dosage": "75mcg",
+        "frequency": "once daily",
+        "instructions": "Take on empty stomach, 30 minutes before breakfast"
+      }
+    ],
+    "dateIssued": "2024-01-19T00:00:00",
+    "duration": {
+      "amount": 90,
+      "unit": "days"
+    },
+    "refillsRemaining": 3,
+    "status": "active"
+  },
+  {
+    "id": "RX011",
+    "patientName": "Christopher Martinez",
+    "doctorName": "Dr. Mark Stevens",
+    "medications": [
+      {
+        "name": "Cyclobenzaprine",
+        "dosage": "10mg",
+        "frequency": "three times daily",
+        "instructions": "For muscle spasm, may cause drowsiness"
+      },
+      {
+        "name": "Naproxen",
+        "dosage": "250mg",
+        "frequency": "twice daily",
+        "instructions": "Take with food for back pain"
+      }
+    ],
+    "dateIssued": "2024-01-17T00:00:00",
+    "duration": {
+      "amount": 14,
+      "unit": "days"
+    },
+    "refillsRemaining": 1,
+    "status": "active"
+  },
+  {
+    "id": "RX012",
+    "patientName": "Amanda Taylor",
+    "doctorName": "Dr. Sarah Johnson",
+    "medications": [
+      {
+        "name": "Cetirizine",
+        "dosage": "10mg",
+        "frequency": "once daily",
+        "instructions": "For allergic rhinitis, take at bedtime"
+      }
+    ],
+    "dateIssued": "2024-01-23T00:00:00",
+    "duration": {
+      "amount": 30,
+      "unit": "days"
+    },
+    "refillsRemaining": 2,
+    "status": "active"
+  },
+  {
+    "id": "RX013",
+    "patientName": "Kevin Lee",
+    "doctorName": "Dr. Sarah Johnson",
+    "medications": [
+      {
+        "name": "Allopurinol",
+        "dosage": "300mg",
+        "frequency": "once daily",
+        "instructions": "For gout prevention, take with plenty of water"
+      },
+      {
+        "name": "Amlodipine",
+        "dosage": "5mg",
+        "frequency": "once daily",
+        "instructions": "For blood pressure, take at same time daily"
+      }
+    ],
+    "dateIssued": "2024-01-13T00:00:00",
+    "duration": {
+      "amount": 90,
+      "unit": "days"
+    },
+    "refillsRemaining": 4,
+    "status": "active"
+  }
+]
