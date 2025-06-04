@@ -1,75 +1,120 @@
 import { motion } from 'framer-motion'
 import Badge from '../atoms/Badge'
 import Button from '../atoms/Button'
+import ApperIcon from '../ApperIcon'
 
 const AppointmentItem = ({ appointment, index, updateAppointmentStatus, getTypeColor }) => {
   const getStatusColor = (status) => {
-    switch (status) {
-      case 'scheduled': return 'bg-primary/10 text-primary'
-      case 'in-progress': return 'bg-accent/10 text-accent'
-      case 'completed': return 'bg-secondary/10 text-secondary'
-      case 'cancelled': return 'bg-error/10 text-error'
-      default: return 'bg-surface-200 text-surface-600'
+    switch (status?.toLowerCase()) {
+      case 'scheduled':
+        return 'bg-primary text-white'
+      case 'completed':
+        return 'bg-success text-white'
+      case 'cancelled':
+        return 'bg-error text-white'
+      case 'rescheduled':
+        return 'bg-accent text-white'
+      default:
+        return 'bg-surface-400 text-white'
     }
   }
 
+  const formatDateTime = (dateTimeString) => {
+    if (!dateTimeString) return 'No date set'
+    
+    try {
+      const date = new Date(dateTimeString)
+      return {
+        date: date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        }),
+        time: date.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+      }
+    } catch (error) {
+      return { date: 'Invalid Date', time: '' }
+    }
+  }
+
+  const handleStatusChange = (newStatus) => {
+    if (updateAppointmentStatus) {
+      updateAppointmentStatus(appointment.Id || appointment.id, newStatus)
+    }
+  }
+
+  // Handle both database fields and legacy field names
+  const patientName = appointment?.Name || appointment?.patientName || 'Unknown Patient'
+  const doctorName = appointment?.doctor_name || appointment?.doctorName || 'Unknown Doctor'
+  const appointmentType = appointment?.type || 'General'
+  const appointmentStatus = appointment?.status || 'Unknown'
+  const appointmentNotes = appointment?.notes
+  const dateTime = formatDateTime(appointment?.date_time || appointment?.dateTime)
+
   return (
     <motion.div
-      key={appointment?.id || index}
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.05 }}
-      className="medical-card p-4 hover:shadow-medical-hover transition-all duration-200"
+      transition={{ delay: index * 0.1 }}
+      className="medical-card p-4"
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
-          <div className="flex items-center space-x-3 mb-2">
-            <div className={`w-3 h-3 rounded-full ${
-              getTypeColor(appointment?.type) === 'primary' ? 'bg-primary' :
-              getTypeColor(appointment?.type) === 'secondary' ? 'bg-secondary' :
-              getTypeColor(appointment?.type) === 'error' ? 'bg-error' :
-              'bg-accent'
-            }`}></div>
-            <h4 className="font-semibold text-surface-900">{appointment?.patientName || 'Unknown Patient'}</h4>
-            <Badge className={getStatusColor(appointment?.status)}>
-              {appointment?.status || 'scheduled'}
+          <div className="flex items-center space-x-2 mb-2">
+            <h3 className="font-semibold text-surface-900">
+              {patientName}
+            </h3>
+            <Badge className={`${getTypeColor(appointmentType)} text-white`}>
+              {appointmentType}
             </Badge>
           </div>
-          <div className="text-sm text-surface-600 space-y-1">
-            <p>Doctor: {appointment?.doctorName || 'N/A'}</p>
-            <p>Time: {appointment?.dateTime ? new Date(appointment.dateTime).toLocaleString() : 'N/A'}</p>
-            <p>Type: {appointment?.type || 'consultation'}</p>
-            {appointment?.notes && <p>Notes: {appointment.notes}</p>}
+          <p className="text-sm text-surface-600 mb-1">
+            Dr. {doctorName}
+          </p>
+          <div className="flex items-center space-x-4 text-sm text-surface-500">
+            <div className="flex items-center space-x-1">
+              <ApperIcon name="Calendar" size={14} />
+              <span>{dateTime.date}</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <ApperIcon name="Clock" size={14} />
+              <span>{dateTime.time}</span>
+            </div>
           </div>
         </div>
-        
-        <div className="flex items-center space-x-2 mt-3 sm:mt-0">
-          {appointment?.status === 'scheduled' && (
-            &lt;&gt;
+        <div className="flex flex-col items-end space-y-2">
+          <Badge className={getStatusColor(appointmentStatus)}>
+            {appointmentStatus}
+          </Badge>
+          {appointmentStatus === 'Scheduled' && (
+            <div className="flex space-x-1">
               <Button
-                onClick={() => updateAppointmentStatus(appointment.id, 'in-progress')}
-                className="px-3 py-1.5 bg-accent/10 text-accent rounded-lg hover:bg-accent/20 text-sm"
+                size="sm"
+                onClick={() => handleStatusChange('Completed')}
+                className="bg-success text-white hover:bg-success/90 text-xs px-2 py-1"
               >
-                Start
+                Complete
               </Button>
               <Button
-                onClick={() => updateAppointmentStatus(appointment.id, 'cancelled')}
-                className="px-3 py-1.5 bg-error/10 text-error rounded-lg hover:bg-error/20 text-sm"
+                size="sm"
+                onClick={() => handleStatusChange('Cancelled')}
+                className="bg-error text-white hover:bg-error/90 text-xs px-2 py-1"
               >
                 Cancel
               </Button>
-            &lt;/&gt;
-          )}
-          {appointment?.status === 'in-progress' && (
-            <Button
-              onClick={() => updateAppointmentStatus(appointment.id, 'completed')}
-              className="px-3 py-1.5 bg-secondary/10 text-secondary rounded-lg hover:bg-secondary/20 text-sm"
-            >
-              Complete
-            </Button>
+            </div>
           )}
         </div>
       </div>
+      
+      {appointmentNotes && (
+        <div className="mt-3 p-2 bg-surface-50 rounded-lg">
+          <p className="text-sm text-surface-600">{appointmentNotes}</p>
+        </div>
+      )}
     </motion.div>
   )
 }

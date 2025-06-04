@@ -1,177 +1,192 @@
 import { useState, useEffect } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { toast } from 'react-toastify'
+import { motion, AnimatePresence } from 'framer-motion'
+import { patientService, appointmentService, prescriptionService } from '../../services'
 import Card from '../atoms/Card'
-import Button from '../atoms/Button'
+import TabButton from '../molecules/TabButton'
 import SearchBar from '../molecules/SearchBar'
 import Select from '../molecules/Select'
-import TabButton from '../molecules/TabButton'
-import AddAppointmentForm from '../molecules/AddAppointmentForm'
-import Modal from '../molecules/Modal'
-import ErrorDisplay from '../molecules/ErrorDisplay'
-import NoDataDisplay from '../molecules/NoDataDisplay'
-import Spinner from '../atoms/Spinner'
 import AppointmentList from './AppointmentList'
 import PatientList from './PatientList'
 import PrescriptionList from './PrescriptionList'
-import { appointmentService, patientService, prescriptionService } from '../../services'
+import NoDataDisplay from '../molecules/NoDataDisplay'
+import ErrorDisplay from '../molecules/ErrorDisplay'
+import Modal from '../molecules/Modal'
+import AddAppointmentForm from '../molecules/AddAppointmentForm'
+import ApperIcon from '../ApperIcon'
+import Button from '../atoms/Button'
+import Spinner from '../atoms/Spinner'
 
 const MainFeature = () => {
   const [activeTab, setActiveTab] = useState('appointments')
-  const [appointments, setAppointments] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
+  
+  // Data states
   const [patients, setPatients] = useState([])
+  const [appointments, setAppointments] = useState([])
   const [prescriptions, setPrescriptions] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0])
-  const [searchTerm, setSearchTerm] = useState('')
-  const [filterStatus, setFilterStatus] = useState('all')
 
-  // Form state for new appointment
-  const [newAppointment, setNewAppointment] = useState({
-    patientName: '',
-    doctorName: 'Dr. Sarah Johnson',
-    date: new Date().toISOString().split('T')[0],
-    time: '09:00',
-    type: 'consultation',
-    notes: ''
-  })
-
-  const tabs = [
-    { id: 'appointments', label: 'Appointments', icon: 'Calendar' },
-    { id: 'patients', label: 'Patient Search', icon: 'Search' },
-    { id: 'prescriptions', label: 'Prescriptions', icon: 'Pill' }
-  ]
-
-  const appointmentTypes = [
-    { value: 'consultation', label: 'Consultation', color: 'primary' },
-    { value: 'follow-up', label: 'Follow-up', color: 'secondary' },
-    { value: 'emergency', label: 'Emergency', color: 'error' },
-    { value: 'routine', label: 'Routine Check', color: 'accent' }
-  ]
-
+  // Load data on component mount and when tab changes
   useEffect(() => {
-    loadTabData()
+    loadData()
   }, [activeTab])
 
-  const loadTabData = async () => {
+  // Load data when filters change
+  useEffect(() => {
+    loadData()
+  }, [searchTerm, statusFilter])
+
+  const loadData = async () => {
     setLoading(true)
     setError(null)
+    
     try {
+      const filters = {
+        searchTerm: searchTerm || undefined,
+        status: statusFilter !== 'all' ? statusFilter : undefined
+      }
+
       switch (activeTab) {
         case 'appointments':
-          const appointmentData = await appointmentService.getAll()
+          const appointmentData = await appointmentService.getAll(filters)
           setAppointments(appointmentData || [])
           break
         case 'patients':
-          const patientData = await patientService.getAll()
+          const patientData = await patientService.getAll(filters)
           setPatients(patientData || [])
           break
         case 'prescriptions':
-          const prescriptionData = await prescriptionService.getAll()
+          const prescriptionData = await prescriptionService.getAll(filters)
           setPrescriptions(prescriptionData || [])
           break
       }
     } catch (err) {
-      setError(err.message)
-      toast.error(`Failed to load ${activeTab}`)
+      setError(`Failed to load ${activeTab}`)
+      console.error(`Error loading ${activeTab}:`, err)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleAddAppointment = async (formData) => {
-    if (!formData.patientName.trim()) {
-      toast.error('Patient name is required')
-      return
-    }
+  const tabs = [
+    { id: 'appointments', label: 'Appointments', icon: 'Calendar', count: appointments.length },
+    { id: 'patients', label: 'Patients', icon: 'Users', count: patients.length },
+    { id: 'prescriptions', label: 'Prescriptions', icon: 'Pill', count: prescriptions.length }
+  ]
 
+  const appointmentTypes = [
+    { value: 'Check-up', label: 'Check-up', color: 'primary' },
+    { value: 'Consultation', label: 'Consultation', color: 'secondary' },
+    { value: 'Follow-up', label: 'Follow-up', color: 'accent' },
+    { value: 'Emergency', label: 'Emergency', color: 'error' }
+  ]
+
+  const statusOptions = {
+    appointments: [
+      { value: 'all', label: 'All Status' },
+      { value: 'Scheduled', label: 'Scheduled' },
+      { value: 'Completed', label: 'Completed' },
+      { value: 'Cancelled', label: 'Cancelled' },
+      { value: 'Rescheduled', label: 'Rescheduled' }
+    ],
+    patients: [
+      { value: 'all', label: 'All Patients' }
+    ],
+    prescriptions: [
+      { value: 'all', label: 'All Status' },
+      { value: 'Active', label: 'Active' },
+      { value: 'Inactive', label: 'Inactive' },
+      { value: 'Renewed', label: 'Renewed' },
+      { value: 'Expired', label: 'Expired' }
+    ]
+  }
+
+  const updateAppointmentStatus = async (id, newStatus) => {
     try {
-      const appointmentData = {
-        patientName: formData.patientName,
-        doctorName: formData.doctorName,
-        dateTime: `${formData.date}T${formData.time}`,
-        type: formData.type,
-        status: 'scheduled',
-        notes: formData.notes
-      }
-
-      await appointmentService.create(appointmentData)
-      setAppointments(prev => [appointmentData, ...prev])
-      setShowAddModal(false)
-      setNewAppointment({
-        patientName: '',
-        doctorName: 'Dr. Sarah Johnson',
-        date: new Date().toISOString().split('T')[0],
-        time: '09:00',
-        type: 'consultation',
-        notes: ''
+      setLoading(true)
+      await appointmentService.update(id, { status: newStatus })
+      // Reload appointments to get updated data
+      const updatedAppointments = await appointmentService.getAll({
+        searchTerm: searchTerm || undefined,
+        status: statusFilter !== 'all' ? statusFilter : undefined
       })
-      toast.success('Appointment scheduled successfully')
+      setAppointments(updatedAppointments || [])
     } catch (err) {
-      toast.error('Failed to schedule appointment')
+      setError('Failed to update appointment status')
+      console.error('Error updating appointment:', err)
+    } finally {
+      setLoading(false)
     }
   }
 
-  const updateAppointmentStatus = async (appointmentId, newStatus) => {
+  const handleAddAppointment = async (appointmentData) => {
     try {
-      await appointmentService.update(appointmentId, { status: newStatus })
-      setAppointments(prev => 
-        prev.map(apt => 
-          apt.id === appointmentId ? { ...apt, status: newStatus } : apt
-        )
-      )
-      toast.success(`Appointment ${newStatus}`)
+      setLoading(true)
+      await appointmentService.create(appointmentData)
+      setIsAddModalOpen(false)
+      // Reload appointments
+      const updatedAppointments = await appointmentService.getAll({
+        searchTerm: searchTerm || undefined,
+        status: statusFilter !== 'all' ? statusFilter : undefined
+      })
+      setAppointments(updatedAppointments || [])
     } catch (err) {
-      toast.error('Failed to update appointment')
+      setError('Failed to create appointment')
+      console.error('Error creating appointment:', err)
+    } finally {
+      setLoading(false)
     }
   }
 
-  const filteredData = () => {
+  const getCurrentData = () => {
     switch (activeTab) {
       case 'appointments':
-        return (appointments || []).filter(apt => {
-          const matchesSearch = apt?.patientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                               apt?.doctorName?.toLowerCase().includes(searchTerm.toLowerCase())
-          const matchesStatus = filterStatus === 'all' || apt?.status === filterStatus
-          const matchesDate = !selectedDate || apt?.dateTime?.startsWith(selectedDate)
-          return matchesSearch && matchesStatus && matchesDate
-        })
+        return appointments
       case 'patients':
-        return (patients || []).filter(patient => {
-          const fullName = `${patient?.personalInfo?.firstName || ''} ${patient?.personalInfo?.lastName || ''}`.toLowerCase()
-          return fullName.includes(searchTerm.toLowerCase()) ||
-                 patient?.id?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                 patient?.personalInfo?.phone?.includes(searchTerm)
-        })
+        return patients
       case 'prescriptions':
-        return (prescriptions || []).filter(prescription => {
-          return prescription?.patientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                 prescription?.doctorName?.toLowerCase().includes(searchTerm.toLowerCase())
-        })
+        return prescriptions
       default:
         return []
     }
   }
 
-  const renderTabContent = () => {
-    const data = filteredData()
+  const getCurrentPlaceholder = () => {
+    switch (activeTab) {
+      case 'appointments':
+        return 'Search appointments by patient or doctor...'
+      case 'patients':
+        return 'Search patients by name...'
+      case 'prescriptions':
+        return 'Search prescriptions by doctor...'
+      default:
+        return 'Search...'
+    }
+  }
+
+  const renderContent = () => {
+    const currentData = getCurrentData()
 
     if (loading) {
-      return <Spinner message={`Loading ${activeTab}...`} className="h-8 w-8 border-b-2 border-primary" />
+      return <Spinner message={`Loading ${activeTab}...`} />
     }
 
     if (error) {
-      return <ErrorDisplay message={error} onRetry={loadTabData} />
+      return <ErrorDisplay message={error} />
     }
 
-    if (data.length === 0) {
+    if (currentData.length === 0) {
       return (
         <NoDataDisplay 
-          message={`No ${activeTab} found`}
-          actionButtonText={activeTab === 'appointments' ? 'Schedule First Appointment' : null}
-          onActionButtonClick={activeTab === 'appointments' ? () => setShowAddModal(true) : null}
+          icon={tabs.find(tab => tab.id === activeTab)?.icon || 'FileX'}
+          title={`No ${activeTab} found`}
+          description={searchTerm || statusFilter !== 'all' 
+            ? `No ${activeTab} match your current filters.`
+            : `You haven't added any ${activeTab} yet.`
+          }
         />
       )
     }
@@ -180,15 +195,15 @@ const MainFeature = () => {
       case 'appointments':
         return (
           <AppointmentList 
-            appointments={data} 
-            updateAppointmentStatus={updateAppointmentStatus} 
+            appointments={currentData}
+            updateAppointmentStatus={updateAppointmentStatus}
             appointmentTypes={appointmentTypes}
           />
         )
       case 'patients':
-        return <PatientList patients={data} />
+        return <PatientList patients={currentData} />
       case 'prescriptions':
-        return <PrescriptionList prescriptions={data} />
+        return <PrescriptionList prescriptions={currentData} />
       default:
         return null
     }
@@ -197,67 +212,62 @@ const MainFeature = () => {
   return (
     <Card className="p-6">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
-        <h3 className="text-lg font-semibold text-surface-900 mb-4 lg:mb-0">Medical Management Hub</h3>
-        
-        <div className="flex flex-col sm:flex-row gap-3">
-          {activeTab === 'appointments' && (
-            <Button
-              onClick={() => setShowAddModal(true)}
-              className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark font-medium"
-              iconName="Plus"
-              iconSize={16}
-            >
-              New Appointment
-            </Button>
-          )}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-primary/10 rounded-xl flex items-center justify-center">
+            <ApperIcon name="Activity" size={20} className="text-primary" />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-surface-900">Medical Records</h2>
+            <p className="text-surface-600 text-sm">Manage patients, appointments, and prescriptions</p>
+          </div>
         </div>
+        
+        {activeTab === 'appointments' && (
+          <Button
+            onClick={() => setIsAddModalOpen(true)}
+            className="bg-primary text-white hover:bg-primary-dark"
+            disabled={loading}
+          >
+            <ApperIcon name="Plus" size={16} className="mr-2" />
+            Add Appointment
+          </Button>
+        )}
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap border-b border-surface-200 mb-6">
+      <div className="flex space-x-1 mb-6 bg-surface-100 p-1 rounded-xl">
         {tabs.map((tab) => (
-          <TabButton 
-            key={tab.id} 
-            tab={tab} 
-            activeTab={activeTab} 
-            onClick={setActiveTab} 
+          <TabButton
+            key={tab.id}
+            isActive={activeTab === tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            icon={tab.icon}
+            label={tab.label}
+            count={tab.count}
+            disabled={loading}
           />
         ))}
       </div>
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
-        <div className="flex-1 relative">
-          <SearchBar 
-            searchTerm={searchTerm} 
-            onSearchChange={(e) => setSearchTerm(e.target.value)} 
-            placeholder={`Search ${activeTab}...`} 
-          />
-</div>
-        
-        {activeTab === 'appointments' && (
-          <>
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="px-3 py-2 border border-surface-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-            />
-            <Select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              options={[
-                { value: 'all', label: 'All Status' },
-                { value: 'scheduled', label: 'Scheduled' },
-                { value: 'in-progress', label: 'In Progress' },
-                { value: 'completed', label: 'Completed' },
-                { value: 'cancelled', label: 'Cancelled' }
-              ]}
-            />
-          </>
-        )}
+        <SearchBar
+          placeholder={getCurrentPlaceholder()}
+          value={searchTerm}
+          onChange={setSearchTerm}
+          className="flex-1"
+          disabled={loading}
+        />
+        <Select
+          value={statusFilter}
+          onChange={setStatusFilter}
+          options={statusOptions[activeTab] || []}
+          className="sm:w-48"
+          disabled={loading}
+        />
       </div>
+
       {/* Content */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -267,21 +277,22 @@ const MainFeature = () => {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2 }}
         >
-          {renderTabContent()}
+          {renderContent()}
         </motion.div>
       </AnimatePresence>
 
       {/* Add Appointment Modal */}
       <Modal
-        isOpen={showAddModal}
-        onClose={() => setShowAddModal(false)}
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
         title="Schedule New Appointment"
       >
         <AddAppointmentForm 
-          onSubmit={handleAddAppointment} 
-          onCancel={() => setShowAddModal(false)} 
-          initialData={newAppointment}
+          onSubmit={handleAddAppointment}
+          onCancel={() => setIsAddModalOpen(false)}
           appointmentTypes={appointmentTypes}
+          patients={patients}
+          loading={loading}
         />
       </Modal>
     </Card>

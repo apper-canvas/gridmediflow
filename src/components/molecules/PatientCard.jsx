@@ -1,49 +1,88 @@
 import { motion } from 'framer-motion'
+import Avatar from '../atoms/Avatar'
+import Badge from '../atoms/Badge'
 import ApperIcon from '../ApperIcon'
-import Button from '../atoms/Button'
 
 const PatientCard = ({ patient, index }) => {
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'active':
+        return 'bg-success text-white'
+      case 'inactive':
+        return 'bg-surface-400 text-white'
+      case 'critical':
+        return 'bg-error text-white'
+      default:
+        return 'bg-primary text-white'
+    }
+  }
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Never'
+    
+    try {
+      const date = new Date(dateString)
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+      })
+    } catch (error) {
+      return 'Invalid Date'
+    }
+  }
+
+  // Handle both database fields and legacy field names
+  const patientName = patient?.Name || patient?.name || `${patient?.first_name || ''} ${patient?.last_name || ''}`.trim() || 'Unknown Patient'
+  const patientEmail = patient?.email || 'No email'
+  const patientPhone = patient?.phone || 'No phone'
+  const patientAge = patient?.age ? `${patient.age} years` : 'Age unknown'
+  const lastVisit = patient?.last_visit || patient?.lastVisit
+  const bloodType = patient?.blood_type || patient?.bloodType || 'Unknown'
+  
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.05 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
       className="medical-card p-4 cursor-pointer group"
     >
-      <div className="flex items-center space-x-3 mb-3">
-        <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full flex items-center justify-center">
-          <ApperIcon name="User" size={20} className="text-primary" />
+      <div className="flex items-start justify-between mb-3">
+        <div className="flex items-center space-x-3">
+          <Avatar 
+            name={patientName} 
+            size="md" 
+            src={patient?.avatar || patient?.AvatarUrl}
+          />
+          <div>
+            <h3 className="font-semibold text-surface-900 group-hover:text-primary transition-colors">
+              {patientName}
+            </h3>
+            <p className="text-sm text-surface-600">{patientEmail}</p>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <h4 className="font-medium text-surface-900 truncate">
-            {patient?.personalInfo?.firstName || 'N/A'} {patient?.personalInfo?.lastName || ''}
-          </h4>
-          <p className="text-sm text-surface-500">ID: {patient?.id || 'N/A'}</p>
-        </div>
+        <Badge className={getStatusColor(patient?.status || 'active')}>
+          {patient?.status || 'Active'}
+        </Badge>
       </div>
-      
-      <div className="space-y-2 text-sm">
-        <div className="flex justify-between">
-          <span className="text-surface-600">Age:</span>
-          <span className="font-medium">{patient?.personalInfo?.age || 'N/A'}</span>
+
+      <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className="flex items-center space-x-2">
+          <ApperIcon name="Phone" size={14} className="text-surface-400" />
+          <span className="text-surface-600">{patientPhone}</span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-surface-600">Blood Type:</span>
-          <span className="font-medium text-error">{patient?.personalInfo?.bloodType || 'N/A'}</span>
+        <div className="flex items-center space-x-2">
+          <ApperIcon name="MapPin" size={14} className="text-surface-400" />
+          <span className="text-surface-600">{patientAge}</span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-surface-600">Last Visit:</span>
-          <span className="font-medium">{patient?.personalInfo?.lastVisit || 'N/A'}</span>
+        <div className="flex items-center space-x-2">
+          <ApperIcon name="Calendar" size={14} className="text-surface-400" />
+          <span className="text-surface-600">Last visit: {formatDate(lastVisit)}</span>
         </div>
-      </div>
-      
-      <div className="mt-4 pt-3 border-t border-surface-200 flex space-x-2">
-        <Button className="flex-1 text-xs bg-primary/10 text-primary py-2 px-3 rounded-lg hover:bg-primary/20">
-          View Record
-        </Button>
-        <Button className="flex-1 text-xs bg-secondary/10 text-secondary py-2 px-3 rounded-lg hover:bg-secondary/20">
-          Book Appt.
-        </Button>
+        <div className="flex items-center space-x-2">
+          <ApperIcon name="Heart" size={14} className="text-surface-400" />
+          <span className="text-surface-600">{bloodType}</span>
+        </div>
       </div>
     </motion.div>
   )
