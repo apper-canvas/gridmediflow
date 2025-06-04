@@ -71,10 +71,10 @@ const HomePage = () => {
     return <Spinner message="Loading dashboard..." />
   }
 
-  return (
+return (
     <DashboardTemplate navigation={navigation}>
       <WelcomeSection 
-        title="Good morning, Dr. Johnson"
+        title="Good morning, Doctor"
         message="You have 8 patients waiting and 16 appointments scheduled for today."
         buttonText="New Patient"
         onButtonClick={() => console.log('New Patient clicked')} // Placeholder for actual logic

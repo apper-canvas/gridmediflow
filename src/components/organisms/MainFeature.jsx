@@ -234,10 +234,10 @@ const MainFeature = () => {
             onSearchChange={(e) => setSearchTerm(e.target.value)} 
             placeholder={`Search ${activeTab}...`} 
           />
-        </div>
+</div>
         
         {activeTab === 'appointments' && (
-          &lt;&gt;
+          <>
             <input
               type="date"
               value={selectedDate}
@@ -255,10 +255,9 @@ const MainFeature = () => {
                 { value: 'cancelled', label: 'Cancelled' }
               ]}
             />
-          &lt;/&gt;
+          </>
         )}
       </div>
-
       {/* Content */}
       <AnimatePresence mode="wait">
         <motion.div
